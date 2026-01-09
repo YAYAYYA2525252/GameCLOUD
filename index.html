@@ -10,7 +10,7 @@
             --bg: #050505; --sidebar: #0f0f0f; --card-bg: #111111; --border: #1f1f1f;
             --accent: #ffffff; --dim: #666; --text: #ffffff; --hero-grad: linear-gradient(45deg, #0f0f0f, #111111);
         }
-        /* --- Original & New Themes --- */
+        /* --- Themes --- */
         body.theme-oled { --bg: #050505; --sidebar: #000; --card-bg: #0a0a0a; --border: #111; }
         body.theme-graphite { --bg: #1a1c1e; --sidebar: #131416; --card-bg: #25282c; --border: #333; }
         body.theme-snow { --bg: #f5f5f7; --sidebar: #ffffff; --card-bg: #ffffff; --border: #e0e0e0; --text: #000; --accent: #000; --dim: #888; --hero-grad: linear-gradient(45deg, #eee, #fff); }
@@ -21,38 +21,42 @@
         body.theme-lava { --bg: #200101; --sidebar: #100000; --card-bg: #300000; --border: #600000; --text: #ff4e00; --accent: #ff0000; --hero-grad: linear-gradient(135deg, #800000, #ff4e00); }
         body.theme-emerald { --bg: #061a10; --sidebar: #04120b; --card-bg: #0c2d1c; --border: #1b4d3e; --hero-grad: linear-gradient(135deg, #1b4d3e, #2ecc71); }
         body.theme-grape { --bg: #12001a; --sidebar: #0a000f; --card-bg: #240033; --border: #4b0082; --hero-grad: linear-gradient(135deg, #4b0082, #9b30ff); }
-        /* Added Themes */
         body.theme-nebula { --bg: #020024; --sidebar: #090979; --card-bg: #001540; --border: #00d4ff; --hero-grad: linear-gradient(135deg, #090979, #00d4ff); }
         body.theme-cyberpunk { --bg: #1a0033; --sidebar: #000; --card-bg: #2d004d; --border: #00ff9f; --text: #00ff9f; --accent: #ff00ff; --hero-grad: linear-gradient(135deg, #ff00ff, #00ff9f); }
         body.theme-rose { --bg: #1a0a0f; --sidebar: #2d131a; --card-bg: #3d1b24; --border: #ff4d6d; --hero-grad: linear-gradient(135deg, #ff4d6d, #ffb3c1); }
         body.theme-earth { --bg: #1b1a17; --sidebar: #282721; --card-bg: #35342c; --border: #a68a64; --hero-grad: linear-gradient(135deg, #764134, #a68a64); }
         body.theme-gold { --bg: #000; --sidebar: #111; --card-bg: #1a1a1a; --border: #d4af37; --text: #d4af37; --accent: #fff; --hero-grad: linear-gradient(135deg, #d4af37, #f9e27d); }
 
-        body { font-family: 'Segoe UI', Roboto, sans-serif; background: var(--bg); color: var(--text); margin: 0; transition: 0.3s ease; overflow-x: hidden; }
+        body { font-family: 'Segoe UI', Roboto, sans-serif; background: var(--bg); color: var(--text); margin: 0; transition: 0.3s ease; overflow: hidden; }
 
+        /* HEADER FIX */
         header { 
             display: flex; align-items: center; justify-content: space-between; 
-            padding: 20px 40px; background: var(--sidebar); border-bottom: 1px solid var(--border);
+            padding: 15px 40px; background: var(--sidebar); border-bottom: 1px solid var(--border);
             position: sticky; top: 0; z-index: 100;
         }
-        .nav-links { display: flex; gap: 30px; align-items: center; }
-        .nav-link { color: var(--dim); cursor: pointer; font-weight: 700; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px; transition: 0.2s; }
-        .nav-link.active, .nav-link:hover { color: var(--accent); }
+        .brand { font-size: 1.5rem; font-weight: 900; letter-spacing: -2px; color: var(--text); }
+        
+        .search-container { flex: 1; max-width: 400px; margin: 0 20px; position: relative; }
+        .search-container input { width: 100%; padding: 10px 15px; border-radius: 8px; background: var(--card-bg); border: 1px solid var(--border); color: #fff; margin-bottom: 0; }
+
+        .header-right { display: flex; align-items: center; gap: 20px; }
+        .settings-trigger { color: var(--dim); cursor: pointer; font-size: 1.2rem; transition: 0.2s; }
+        .settings-trigger:hover { color: var(--accent); }
 
         #boot-screen { position: fixed; inset: 0; background: #000; z-index: 9999; display: flex; flex-direction: column; align-items: center; justify-content: center; transition: opacity 0.5s ease; }
         .boot-logo { font-size: 2.5rem; font-weight: 900; letter-spacing: -2px; color: #fff; }
 
-        main { padding: 40px; max-width: 1400px; margin: 0 auto; }
-        .hero { background: var(--hero-grad); border: 1px solid var(--border); border-radius: 20px; padding: 40px; margin-bottom: 40px; position: relative; }
+        main { padding: 40px; max-width: 1400px; margin: 0 auto; height: calc(100vh - 80px); overflow-y: auto; }
+        .hero { background: var(--hero-grad); border: 1px solid var(--border); border-radius: 20px; padding: 40px; margin-bottom: 40px; }
         
-        .game-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 25px; min-height: 200px; }
+        .game-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 25px; }
         .game-card { 
             background: var(--card-bg); border: 1px solid var(--border); border-radius: 18px; 
             padding: 20px 10px; display: flex; flex-direction: column; align-items: center; 
-            transition: 0.2s; cursor: grab; text-align: center; position: relative;
+            transition: 0.2s; cursor: pointer; text-align: center; position: relative;
         }
-        .game-card:active { cursor: grabbing; transform: scale(0.95); opacity: 0.8; }
-        .game-card:hover { border-color: var(--accent); }
+        .game-card:hover { border-color: var(--accent); transform: translateY(-5px); }
         
         .icon-wrapper { width: 74px; height: 74px; border-radius: 18px; margin-bottom: 12px; overflow: hidden; pointer-events: none; }
         .game-icon-sq { width: 100%; height: 100%; object-fit: cover; }
@@ -60,20 +64,32 @@
         
         .card-actions { margin-top: 10px; display: flex; gap: 15px; font-size: 0.85rem; color: var(--dim); opacity: 0; transition: 0.2s; }
         .game-card:hover .card-actions { opacity: 1; }
+        .card-actions i:hover { color: var(--accent); }
 
-        /* Custom Overlays */
-        #settings-overlay, #modal-overlay, #confirm-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.85); display: none; align-items: center; justify-content: center; z-index: 5000; backdrop-filter: blur(10px); }
+        /* Overlays */
+        #settings-overlay, #modal-overlay, #confirm-overlay, #split-select-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.85); display: none; align-items: center; justify-content: center; z-index: 5000; backdrop-filter: blur(10px); }
         .modal-card { background: var(--bg); border: 1px solid var(--border); width: 450px; padding: 30px; border-radius: 24px; max-height: 80vh; overflow-y: auto; }
         input { width: 100%; margin-bottom: 12px; padding: 14px; background: var(--sidebar); border: 1px solid var(--border); color: var(--text); border-radius: 10px; box-sizing: border-box; outline: none; }
         
         .theme-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin: 20px 0; }
         .theme-btn { border: 1px solid var(--border); padding: 15px 5px; border-radius: 10px; cursor: pointer; font-size: 0.7rem; text-align: center; font-weight: bold; color: #fff; }
 
+        /* PLAYER VIEW & SPLIT */
         #player-view { position: fixed; inset: 0; background: #000; display: none; z-index: 4000; flex-direction: column; }
-        .player-controls { display: flex; justify-content: space-between; align-items: center; padding: 15px 25px; background: #000; border-bottom: 1px solid #111; }
-        .exit-btn { background: #fff; color: #000; padding: 8px 16px; border-radius: 6px; cursor: pointer; font-weight: bold; }
+        .player-controls { display: flex; justify-content: space-between; align-items: center; padding: 10px 25px; background: #000; border-bottom: 1px solid #111; }
+        .p-btns { display: flex; gap: 10px; }
+        .p-btn { background: #222; color: #fff; border: none; padding: 8px 15px; border-radius: 6px; cursor: pointer; font-weight: bold; font-size: 0.8rem; }
+        .p-btn.exit { background: #fff; color: #000; }
+        
+        .frame-container { display: flex; flex-grow: 1; background: #000; }
+        iframe { flex: 1; border: none; width: 100%; height: 100%; }
+        #split-frame { display: none; border-left: 1px solid var(--border); }
+
         .confirm-btns { display: flex; gap: 10px; margin-top: 20px; }
         .btn-action { flex: 1; padding: 12px; border-radius: 10px; border: none; font-weight: bold; cursor: pointer; }
+
+        .split-item { padding: 10px; border-bottom: 1px solid var(--border); cursor: pointer; display: flex; align-items: center; gap: 10px; }
+        .split-item:hover { background: var(--card-bg); }
     </style>
 </head>
 <body class="theme-oled">
@@ -84,47 +100,56 @@
 
     <header>
         <div class="brand">GameCloud.</div>
-        <div class="nav-links">
-            <div class="nav-link active" onclick="switchTab('home', this)">Me</div>
-            <div class="nav-link" onclick="switchTab('favs', this)">Favorites</div>
-            <div class="nav-link" onclick="toggleSettings()"><i class="fa-solid fa-gear"></i> Settings</div>
+        
+        <div class="search-container">
+            <input type="text" id="searchInput" placeholder="Search your library..." oninput="render()">
         </div>
-        <div style="text-align: right">
-            <div id="clock" style="font-weight: 800; font-size: 1.1rem;">00:00</div>
-            <div id="date" style="font-size: 0.65rem; color: var(--dim); font-weight: 700; text-transform: uppercase;">-- --- ----</div>
+
+        <div class="header-right">
+            <i class="fa-solid fa-gear settings-trigger" onclick="toggleSettings()"></i>
+            <div style="text-align: right">
+                <div id="clock" style="font-weight: 800; font-size: 1rem;">00:00</div>
+                <div id="date" style="font-size: 0.6rem; color: var(--dim); font-weight: 700; text-transform: uppercase;">-- --- ----</div>
+            </div>
         </div>
     </header>
 
     <main>
         <div class="hero">
-            <div class="hero-content">
-                <h1>Welcome Back</h1>
-                <p>Your progress is saved automatically. Drag icons to reorder.</p>
-                <button style="background:#fff; border:none; padding:10px 20px; border-radius:8px; cursor:pointer; font-weight:bold" onclick="openModal()">+ Add New</button>
-            </div>
+            <h1>Welcome Back</h1>
+            <p>Manage your library and multitask with split-view.</p>
+            <button style="background:#fff; border:none; padding:10px 20px; border-radius:8px; cursor:pointer; font-weight:bold" onclick="openModal()">+ Add New</button>
         </div>
         <div id="game-grid" class="game-grid" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
     </main>
 
+    <div id="modal-overlay">
+        <div class="modal-card">
+            <h3 id="modal-title">Add New Game</h3>
+            <input type="hidden" id="editIdx">
+            <input type="text" id="mName" placeholder="Name">
+            <input type="text" id="mUrl" placeholder="URL">
+            <input type="text" id="mIcon" placeholder="Icon URL | Optional">
+            <button onclick="saveGame()" id="save-btn" style="width:100%; padding:14px; background:#fff; color:#000; border:none; border-radius:10px; font-weight:bold; cursor:pointer;">Save</button>
+            <button onclick="closeModal()" style="width:100%; background:none; border:none; color:var(--dim); margin-top:10px; cursor:pointer">Cancel</button>
+        </div>
+    </div>
+
+    <div id="split-select-overlay">
+        <div class="modal-card">
+            <h3>Choose Side App</h3>
+            <div id="split-list" style="margin-top:15px"></div>
+            <button onclick="closeSplitSelect()" style="width:100%; background:none; border:none; color:var(--dim); margin-top:10px; cursor:pointer">Cancel</button>
+        </div>
+    </div>
+
     <div id="confirm-overlay">
         <div class="modal-card">
-            <h3 id="confirm-title">Delete this game?</h3>
-            <p style="color: var(--dim); font-size: 0.9rem;">This will remove it from your library.</p>
+            <h3>Delete this item?</h3>
             <div class="confirm-btns">
                 <button class="btn-action" id="confirm-yes" style="background: #ff4757; color: white;">Confirm Delete</button>
                 <button class="btn-action" onclick="closeConfirm()" style="background: var(--sidebar); color: var(--text);">Cancel</button>
             </div>
-        </div>
-    </div>
-
-    <div id="modal-overlay">
-        <div class="modal-card">
-            <h3>Add New Game</h3>
-            <input type="text" id="mName" placeholder="Name">
-            <input type="text" id="mUrl" placeholder="URL">
-            <input type="text" id="mIcon" placeholder="Icon URL | Optional">
-            <button onclick="saveGame()" style="width:100%; padding:14px; background:#fff; color:#000; border:none; border-radius:10px; font-weight:bold; cursor:pointer;">Add to Library</button>
-            <button onclick="closeModal()" style="width:100%; background:none; border:none; color:var(--dim); margin-top:10px; cursor:pointer">Cancel</button>
         </div>
     </div>
 
@@ -154,16 +179,21 @@
 
     <div id="player-view">
         <div class="player-controls">
-            <div class="exit-btn" onclick="closePlayer()">← Exit</div>
-            <div id="playing-now" style="font-weight: bold; color: #555;">Game Session Active</div>
+            <div class="p-btns">
+                <button class="p-btn exit" onclick="closePlayer()">← Exit</button>
+                <button class="p-btn" onclick="openSplitSelect()">Split View</button>
+            </div>
+            <div id="playing-now" style="font-weight: bold; color: #555;">SESSION ACTIVE</div>
         </div>
-        <iframe id="game-frame" style="flex-grow:1; border:none; background:#fff"></iframe>
+        <div class="frame-container">
+            <iframe id="game-frame"></iframe>
+            <iframe id="split-frame"></iframe>
+        </div>
     </div>
 
     <script>
         const KEY = 'gc_final_v13';
         let games = JSON.parse(localStorage.getItem(KEY)) || [];
-        let currentTab = 'home';
         let deleteIdx = null;
 
         window.addEventListener('load', () => {
@@ -171,7 +201,7 @@
                 const boot = document.getElementById('boot-screen');
                 boot.style.opacity = '0';
                 setTimeout(() => boot.style.display = 'none', 500);
-            }, 2000);
+            }, 1200);
         });
 
         // Draggable Logic
@@ -197,21 +227,34 @@
 
         function render() {
             const grid = document.getElementById('game-grid');
+            const search = document.getElementById('searchInput').value.toLowerCase();
             grid.innerHTML = '';
-            let list = currentTab === 'home' ? games : games.filter(g => g.fav);
-            list.forEach((game, idx) => {
-                let dUrl = game.url.startsWith('http') ? game.url : 'https://' + game.url;
-                const icon = game.icon || `https://www.google.com/s2/favicons?sz=128&domain=${new URL(dUrl).hostname}`;
-                grid.innerHTML += `
-                    <div class="game-card" draggable="true" ondragstart="drag(event, ${idx})" data-index="${idx}" onclick="play('${dUrl}', '${game.name}')">
-                        <div class="icon-wrapper"><img src="${icon}" class="game-icon-sq" onerror="this.src='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/svgs/solid/gamepad.svg'"></div>
-                        <strong>${game.name}</strong>
-                        <div class="card-actions">
-                            <i class="fa-solid fa-heart" style="color:${game.fav ? '#ff4757' : 'var(--dim)'}" onclick="toggleFav(${idx}); event.stopPropagation();"></i>
-                            <i class="fa-solid fa-trash" onclick="askDelete(${idx}); event.stopPropagation();"></i>
-                        </div>
-                    </div>`;
+            
+            games.forEach((game, idx) => {
+                if (game.name.toLowerCase().includes(search)) {
+                    let dUrl = game.url.startsWith('http') ? game.url : 'https://' + game.url;
+                    const icon = game.icon || `https://www.google.com/s2/favicons?sz=128&domain=${new URL(dUrl).hostname}`;
+                    grid.innerHTML += `
+                        <div class="game-card" draggable="true" ondragstart="drag(event, ${idx})" data-index="${idx}" onclick="play('${dUrl}', '${game.name}')">
+                            <div class="icon-wrapper"><img src="${icon}" class="game-icon-sq" onerror="this.src='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/svgs/solid/gamepad.svg'"></div>
+                            <strong>${game.name}</strong>
+                            <div class="card-actions">
+                                <i class="fa-solid fa-pen" onclick="editGame(${idx}); event.stopPropagation();"></i>
+                                <i class="fa-solid fa-trash" onclick="askDelete(${idx}); event.stopPropagation();"></i>
+                            </div>
+                        </div>`;
+                }
             });
+        }
+
+        function editGame(idx) {
+            const game = games[idx];
+            document.getElementById('modal-title').innerText = "Edit Game";
+            document.getElementById('editIdx').value = idx;
+            document.getElementById('mName').value = game.name;
+            document.getElementById('mUrl').value = game.url;
+            document.getElementById('mIcon').value = game.icon || "";
+            openModal();
         }
 
         function askDelete(idx) {
@@ -226,25 +269,59 @@
         };
 
         function play(url, name) { 
-            document.getElementById('playing-now').innerText = name;
+            document.getElementById('playing-now').innerText = name.toUpperCase();
             document.getElementById('game-frame').src = url; 
             document.getElementById('player-view').style.display = 'flex'; 
         }
-        function closePlayer() { document.getElementById('game-frame').src = ''; document.getElementById('player-view').style.display = 'none'; }
+
+        function openSplitSelect() {
+            const list = document.getElementById('split-list');
+            list.innerHTML = '';
+            games.forEach(g => {
+                list.innerHTML += `<div class="split-item" onclick="startSplit('${g.url}')">${g.name}</div>`;
+            });
+            document.getElementById('split-select-overlay').style.display = 'flex';
+        }
+        function closeSplitSelect() { document.getElementById('split-select-overlay').style.display = 'none'; }
+        
+        function startSplit(url) {
+            const sf = document.getElementById('split-frame');
+            const dUrl = url.startsWith('http') ? url : 'https://' + url;
+            sf.src = dUrl;
+            sf.style.display = 'block';
+            closeSplitSelect();
+        }
+
+        function closePlayer() { 
+            document.getElementById('game-frame').src = ''; 
+            document.getElementById('split-frame').src = ''; 
+            document.getElementById('split-frame').style.display = 'none';
+            document.getElementById('player-view').style.display = 'none'; 
+        }
+
         function save() { localStorage.setItem(KEY, JSON.stringify(games)); render(); }
+        
         function saveGame() {
             const n = document.getElementById('mName').value, u = document.getElementById('mUrl').value, i = document.getElementById('mIcon').value;
-            if (n && u) { games.push({ name: n, url: u, icon: i, fav: false }); save(); closeModal(); }
+            const idx = document.getElementById('editIdx').value;
+            if (n && u) {
+                if (idx !== "") {
+                    games[idx] = { name: n, url: u, icon: i };
+                } else {
+                    games.push({ name: n, url: u, icon: i });
+                }
+                save(); closeModal();
+            }
         }
-        function toggleFav(idx) { games[idx].fav = !games[idx].fav; save(); }
-        function switchTab(t, el) {
-            currentTab = t;
-            document.querySelectorAll('.nav-link').forEach(n => n.classList.remove('active'));
-            el.classList.add('active'); render();
-        }
+
         function toggleSettings() { const s = document.getElementById('settings-overlay'); s.style.display = (s.style.display === 'flex' ? 'none' : 'flex'); }
         function openModal() { document.getElementById('modal-overlay').style.display='flex'; }
-        function closeModal() { document.getElementById('modal-overlay').style.display='none'; }
+        function closeModal() { 
+            document.getElementById('modal-overlay').style.display='none'; 
+            document.getElementById('editIdx').value = "";
+            document.getElementById('mName').value = ""; document.getElementById('mUrl').value = ""; document.getElementById('mIcon').value = "";
+            document.getElementById('modal-title').innerText = "Add New Game";
+        }
         function setTheme(t) { document.body.className = 'theme-' + t; localStorage.setItem('gc_theme', t); }
         function wipeData() { if(confirm('Wipe all library data?')) { localStorage.removeItem(KEY); games = []; render(); } }
 
