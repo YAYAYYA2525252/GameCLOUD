@@ -11,8 +11,11 @@
             --accent: #ffffff; --dim: #666; --text: #ffffff; --hero-grad: linear-gradient(45deg, #0f0f0f, #111111);
         }
         /* --- Themes --- */
-        body.theme-oled { --bg: #050505; --sidebar: #000; --card-bg: #0a0a0a; --border: #111; }
-        body.theme-graphite { --bg: #1a1c1e; --sidebar: #131416; --card-bg: #25282c; --border: #333; }
+        /* OLED: Pure Blacks (#000) and very deep neutral grey, no brown */
+        body.theme-oled { --bg: #000000; --sidebar: #000000; --card-bg: #050505; --border: #111; --hero-grad: linear-gradient(45deg, #000000, #0a0a0a); }
+        /* Graphite: Cold Slate Greys (#121416) to ensure no muddy tint */
+        body.theme-graphite { --bg: #121416; --sidebar: #0d0e10; --card-bg: #1c1e21; --border: #2a2d31; --hero-grad: linear-gradient(45deg, #121416, #1c1e21); }
+        
         body.theme-snow { --bg: #f5f5f7; --sidebar: #ffffff; --card-bg: #ffffff; --border: #e0e0e0; --text: #000; --accent: #000; --dim: #888; --hero-grad: linear-gradient(45deg, #eee, #fff); }
         body.theme-ocean { --bg: #001219; --sidebar: #001f29; --card-bg: #002d3a; --border: #005f73; --hero-grad: linear-gradient(135deg, #005f73, #0a9396); }
         body.theme-sunset { --bg: #2b0d0d; --sidebar: #3d1414; --card-bg: #4e1a1a; --border: #9b2226; --hero-grad: linear-gradient(135deg, #ae2012, #ee9b00); }
@@ -21,31 +24,26 @@
         body.theme-lava { --bg: #200101; --sidebar: #100000; --card-bg: #300000; --border: #600000; --text: #ff4e00; --accent: #ff0000; --hero-grad: linear-gradient(135deg, #800000, #ff4e00); }
         body.theme-emerald { --bg: #061a10; --sidebar: #04120b; --card-bg: #0c2d1c; --border: #1b4d3e; --hero-grad: linear-gradient(135deg, #1b4d3e, #2ecc71); }
         body.theme-grape { --bg: #12001a; --sidebar: #0a000f; --card-bg: #240033; --border: #4b0082; --hero-grad: linear-gradient(135deg, #4b0082, #9b30ff); }
-        body.theme-nebula { --bg: #020024; --sidebar: #090979; --card-bg: #001540; --border: #00d4ff; --hero-grad: linear-gradient(135deg, #090979, #00d4ff); }
-        body.theme-cyberpunk { --bg: #1a0033; --sidebar: #000; --card-bg: #2d004d; --border: #00ff9f; --text: #00ff9f; --accent: #ff00ff; --hero-grad: linear-gradient(135deg, #ff00ff, #00ff9f); }
         body.theme-rose { --bg: #1a0a0f; --sidebar: #2d131a; --card-bg: #3d1b24; --border: #ff4d6d; --hero-grad: linear-gradient(135deg, #ff4d6d, #ffb3c1); }
-        body.theme-earth { --bg: #1b1a17; --sidebar: #282721; --card-bg: #35342c; --border: #a68a64; --hero-grad: linear-gradient(135deg, #764134, #a68a64); }
-        body.theme-gold { --bg: #000; --sidebar: #111; --card-bg: #1a1a1a; --border: #d4af37; --text: #d4af37; --accent: #fff; --hero-grad: linear-gradient(135deg, #d4af37, #f9e27d); }
 
         body { font-family: 'Segoe UI', Roboto, sans-serif; background: var(--bg); color: var(--text); margin: 0; transition: 0.3s ease; overflow: hidden; }
 
-        /* HEADER FIX */
         header { 
             display: flex; align-items: center; justify-content: space-between; 
             padding: 15px 40px; background: var(--sidebar); border-bottom: 1px solid var(--border);
             position: sticky; top: 0; z-index: 100;
         }
-        .brand { font-size: 1.5rem; font-weight: 900; letter-spacing: -2px; color: var(--text); }
+        .brand { font-size: 1.5rem; font-weight: 900; letter-spacing: 0px; color: var(--text); }
         
         .search-container { flex: 1; max-width: 400px; margin: 0 20px; position: relative; }
-        .search-container input { width: 100%; padding: 10px 15px; border-radius: 8px; background: var(--card-bg); border: 1px solid var(--border); color: #fff; margin-bottom: 0; }
+        .search-container input { width: 100%; padding: 10px 15px; border-radius: 8px; background: var(--card-bg); border: 1px solid var(--border); color: #fff; margin-bottom: 0; outline: none; }
 
         .header-right { display: flex; align-items: center; gap: 20px; }
         .settings-trigger { color: var(--dim); cursor: pointer; font-size: 1.2rem; transition: 0.2s; }
         .settings-trigger:hover { color: var(--accent); }
 
         #boot-screen { position: fixed; inset: 0; background: #000; z-index: 9999; display: flex; flex-direction: column; align-items: center; justify-content: center; transition: opacity 0.5s ease; }
-        .boot-logo { font-size: 2.5rem; font-weight: 900; letter-spacing: -2px; color: #fff; }
+        .boot-logo { font-size: 2.5rem; font-weight: 900; letter-spacing: 0px; color: #fff; }
 
         main { padding: 40px; max-width: 1400px; margin: 0 auto; height: calc(100vh - 80px); overflow-y: auto; }
         .hero { background: var(--hero-grad); border: 1px solid var(--border); border-radius: 20px; padding: 40px; margin-bottom: 40px; }
@@ -66,7 +64,6 @@
         .game-card:hover .card-actions { opacity: 1; }
         .card-actions i:hover { color: var(--accent); }
 
-        /* Overlays */
         #settings-overlay, #modal-overlay, #confirm-overlay, #split-select-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.85); display: none; align-items: center; justify-content: center; z-index: 5000; backdrop-filter: blur(10px); }
         .modal-card { background: var(--bg); border: 1px solid var(--border); width: 450px; padding: 30px; border-radius: 24px; max-height: 80vh; overflow-y: auto; }
         input { width: 100%; margin-bottom: 12px; padding: 14px; background: var(--sidebar); border: 1px solid var(--border); color: var(--text); border-radius: 10px; box-sizing: border-box; outline: none; }
@@ -74,7 +71,6 @@
         .theme-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin: 20px 0; }
         .theme-btn { border: 1px solid var(--border); padding: 15px 5px; border-radius: 10px; cursor: pointer; font-size: 0.7rem; text-align: center; font-weight: bold; color: #fff; }
 
-        /* PLAYER VIEW & SPLIT */
         #player-view { position: fixed; inset: 0; background: #000; display: none; z-index: 4000; flex-direction: column; }
         .player-controls { display: flex; justify-content: space-between; align-items: center; padding: 10px 25px; background: #000; border-bottom: 1px solid #111; }
         .p-btns { display: flex; gap: 10px; }
@@ -100,11 +96,9 @@
 
     <header>
         <div class="brand">GameCloud.</div>
-        
         <div class="search-container">
-            <input type="text" id="searchInput" placeholder="Search your library..." oninput="render()">
+            <input type="text" id="searchInput" placeholder="Search.." oninput="render()">
         </div>
-
         <div class="header-right">
             <i class="fa-solid fa-gear settings-trigger" onclick="toggleSettings()"></i>
             <div style="text-align: right">
@@ -116,8 +110,8 @@
 
     <main>
         <div class="hero">
-            <h1>Welcome Back</h1>
-            <p>Manage your library and multitask with split-view.</p>
+            <h1>Ready to Play?</h1>
+            <p>Everything's right where you left it. Ready when you are!</p>
             <button style="background:#fff; border:none; padding:10px 20px; border-radius:8px; cursor:pointer; font-weight:bold" onclick="openModal()">+ Add New</button>
         </div>
         <div id="game-grid" class="game-grid" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
@@ -125,12 +119,12 @@
 
     <div id="modal-overlay">
         <div class="modal-card">
-            <h3 id="modal-title">Add New Game</h3>
+            <h3 id="modal-title">Add Game</h3>
             <input type="hidden" id="editIdx">
             <input type="text" id="mName" placeholder="Name">
             <input type="text" id="mUrl" placeholder="URL">
             <input type="text" id="mIcon" placeholder="Icon URL | Optional">
-            <button onclick="saveGame()" id="save-btn" style="width:100%; padding:14px; background:#fff; color:#000; border:none; border-radius:10px; font-weight:bold; cursor:pointer;">Save</button>
+            <button onclick="saveGame()" id="save-btn" style="width:100%; padding:14px; background:#fff; color:#000; border:none; border-radius:10px; font-weight:bold; cursor:pointer;">Add</button>
             <button onclick="closeModal()" style="width:100%; background:none; border:none; color:var(--dim); margin-top:10px; cursor:pointer">Cancel</button>
         </div>
     </div>
@@ -167,11 +161,7 @@
                 <div class="theme-btn" onclick="setTheme('lava')" style="background:linear-gradient(135deg, #800000, #ff4e00);">Lava</div>
                 <div class="theme-btn" onclick="setTheme('emerald')" style="background:linear-gradient(135deg, #1b4d3e, #2ecc71);">Emerald</div>
                 <div class="theme-btn" onclick="setTheme('grape')" style="background:linear-gradient(135deg, #4b0082, #9b30ff);">Grape</div>
-                <div class="theme-btn" onclick="setTheme('nebula')" style="background:linear-gradient(135deg, #090979, #00d4ff);">Nebula</div>
-                <div class="theme-btn" onclick="setTheme('cyberpunk')" style="background:linear-gradient(135deg, #ff00ff, #00ff9f);">Cyber</div>
                 <div class="theme-btn" onclick="setTheme('rose')" style="background:linear-gradient(135deg, #ff4d6d, #ffb3c1);">Rose</div>
-                <div class="theme-btn" onclick="setTheme('earth')" style="background:linear-gradient(135deg, #764134, #a68a64);">Earth</div>
-                <div class="theme-btn" onclick="setTheme('gold')" style="background:linear-gradient(135deg, #d4af37, #f9e27d);">Gold</div>
             </div>
             <button onclick="wipeData()" style="width:100%; background:#ff4757; color:white; border:none; padding:12px; border-radius:10px; cursor:pointer; font-weight:bold">Wipe Data</button>
         </div>
@@ -204,7 +194,6 @@
             }, 1200);
         });
 
-        // Draggable Logic
         function allowDrop(ev) { ev.preventDefault(); }
         function drag(ev, index) { ev.dataTransfer.setData("text", index); }
         function drop(ev) {
@@ -229,7 +218,6 @@
             const grid = document.getElementById('game-grid');
             const search = document.getElementById('searchInput').value.toLowerCase();
             grid.innerHTML = '';
-            
             games.forEach((game, idx) => {
                 if (game.name.toLowerCase().includes(search)) {
                     let dUrl = game.url.startsWith('http') ? game.url : 'https://' + game.url;
@@ -305,11 +293,8 @@
             const n = document.getElementById('mName').value, u = document.getElementById('mUrl').value, i = document.getElementById('mIcon').value;
             const idx = document.getElementById('editIdx').value;
             if (n && u) {
-                if (idx !== "") {
-                    games[idx] = { name: n, url: u, icon: i };
-                } else {
-                    games.push({ name: n, url: u, icon: i });
-                }
+                if (idx !== "") games[idx] = { name: n, url: u, icon: i };
+                else games.push({ name: n, url: u, icon: i });
                 save(); closeModal();
             }
         }
