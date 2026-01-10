@@ -11,11 +11,8 @@
             --accent: #ffffff; --dim: #666; --text: #ffffff; --hero-grad: linear-gradient(45deg, #0f0f0f, #111111);
         }
         /* --- Themes --- */
-        /* OLED: Pure Blacks (#000) and very deep neutral grey, no brown */
         body.theme-oled { --bg: #000000; --sidebar: #000000; --card-bg: #050505; --border: #111; --hero-grad: linear-gradient(45deg, #000000, #0a0a0a); }
-        /* Graphite: Cold Slate Greys (#121416) to ensure no muddy tint */
         body.theme-graphite { --bg: #121416; --sidebar: #0d0e10; --card-bg: #1c1e21; --border: #2a2d31; --hero-grad: linear-gradient(45deg, #121416, #1c1e21); }
-        
         body.theme-snow { --bg: #f5f5f7; --sidebar: #ffffff; --card-bg: #ffffff; --border: #e0e0e0; --text: #000; --accent: #000; --dim: #888; --hero-grad: linear-gradient(45deg, #eee, #fff); }
         body.theme-ocean { --bg: #001219; --sidebar: #001f29; --card-bg: #002d3a; --border: #005f73; --hero-grad: linear-gradient(135deg, #005f73, #0a9396); }
         body.theme-sunset { --bg: #2b0d0d; --sidebar: #3d1414; --card-bg: #4e1a1a; --border: #9b2226; --hero-grad: linear-gradient(135deg, #ae2012, #ee9b00); }
@@ -78,6 +75,7 @@
         .p-btn.exit { background: #fff; color: #000; }
         
         .frame-container { display: flex; flex-grow: 1; background: #000; }
+        /* UPGRADED IFRAMES FOR SAFETY */
         iframe { flex: 1; border: none; width: 100%; height: 100%; }
         #split-frame { display: none; border-left: 1px solid var(--border); }
 
@@ -151,14 +149,14 @@
         <div class="modal-card">
             <h2>Select Theme</h2>
             <div class="theme-grid">
-                <div class="theme-btn" onclick="setTheme('oled')" style="background:#000;">OLED</div>
+                <div class="theme-btn" onclick="setTheme('oled')" style="background:#000;">Void</div>
                 <div class="theme-btn" onclick="setTheme('graphite')" style="background:#25282c;">Graphite</div>
-                <div class="theme-btn" onclick="setTheme('snow')" style="background:#fff; color:#000; border:1px solid #ccc">Snow</div>
+                <div class="theme-btn" onclick="setTheme('snow')" style="background:#fff; color:#000; border:1px solid #ccc">Pure</div>
                 <div class="theme-btn" onclick="setTheme('ocean')" style="background:linear-gradient(135deg, #005f73, #0a9396);">Ocean</div>
                 <div class="theme-btn" onclick="setTheme('sunset')" style="background:linear-gradient(135deg, #ae2012, #ee9b00);">Sunset</div>
                 <div class="theme-btn" onclick="setTheme('midnight')" style="background:linear-gradient(135deg, #24243e, #302b63);">Midnight</div>
                 <div class="theme-btn" onclick="setTheme('frost')" style="background:linear-gradient(135deg, #80deea, #e0f7fa); color:#006064">Frost</div>
-                <div class="theme-btn" onclick="setTheme('lava')" style="background:linear-gradient(135deg, #800000, #ff4e00);">Lava</div>
+                <div class="theme-btn" onclick="setTheme('lava')" style="background:linear-gradient(135deg, #800000, #ff4e00);">Inferno</div>
                 <div class="theme-btn" onclick="setTheme('emerald')" style="background:linear-gradient(135deg, #1b4d3e, #2ecc71);">Emerald</div>
                 <div class="theme-btn" onclick="setTheme('grape')" style="background:linear-gradient(135deg, #4b0082, #9b30ff);">Grape</div>
                 <div class="theme-btn" onclick="setTheme('rose')" style="background:linear-gradient(135deg, #ff4d6d, #ffb3c1);">Rose</div>
@@ -176,8 +174,8 @@
             <div id="playing-now" style="font-weight: bold; color: #555;">SESSION ACTIVE</div>
         </div>
         <div class="frame-container">
-            <iframe id="game-frame"></iframe>
-            <iframe id="split-frame"></iframe>
+            <iframe id="game-frame" sandbox="allow-scripts allow-forms allow-same-origin allow-popups" credentialless allow="autoplay; gamepad; fullscreen"></iframe>
+            <iframe id="split-frame" sandbox="allow-scripts allow-forms allow-same-origin allow-popups" credentialless allow="autoplay; gamepad; fullscreen"></iframe>
         </div>
     </div>
 
@@ -256,9 +254,20 @@
             closeConfirm();
         };
 
+        // NEW BYPASS FUNCTION TO SHOW BLOCKED SITES
+        function bypassRefused(url) {
+            const blockedSites = ['youtube.com', 'itch.io', 'google.com', 'discord.com', 'github.io'];
+            const needsBypass = blockedSites.some(site => url.includes(site));
+            if (needsBypass) {
+                return `https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`;
+            }
+            return url;
+        }
+
         function play(url, name) { 
             document.getElementById('playing-now').innerText = name.toUpperCase();
-            document.getElementById('game-frame').src = url; 
+            // USE BYPASS FOR THE MAIN FRAME
+            document.getElementById('game-frame').src = bypassRefused(url); 
             document.getElementById('player-view').style.display = 'flex'; 
         }
 
@@ -275,7 +284,8 @@
         function startSplit(url) {
             const sf = document.getElementById('split-frame');
             const dUrl = url.startsWith('http') ? url : 'https://' + url;
-            sf.src = dUrl;
+            // USE BYPASS FOR THE SPLIT FRAME
+            sf.src = bypassRefused(dUrl);
             sf.style.display = 'block';
             closeSplitSelect();
         }
