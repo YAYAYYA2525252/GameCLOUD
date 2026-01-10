@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GameCloud</title>
+    <title>Null</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
@@ -23,81 +23,119 @@
         body.theme-grape { --bg: #12001a; --sidebar: #0a000f; --card-bg: #240033; --border: #4b0082; --hero-grad: linear-gradient(135deg, #4b0082, #9b30ff); }
         body.theme-rose { --bg: #1a0a0f; --sidebar: #2d131a; --card-bg: #3d1b24; --border: #ff4d6d; --hero-grad: linear-gradient(135deg, #ff4d6d, #ffb3c1); }
 
-        body { font-family: 'Segoe UI', Roboto, sans-serif; background: var(--bg); color: var(--text); margin: 0; transition: 0.3s ease; overflow: hidden; }
+        body { font-family: 'Segoe UI', Roboto, sans-serif; background: var(--bg); color: var(--text); margin: 0; transition: background 0.5s ease; overflow: hidden; }
 
         header { 
             display: flex; align-items: center; justify-content: space-between; 
             padding: 15px 40px; background: var(--sidebar); border-bottom: 1px solid var(--border);
             position: sticky; top: 0; z-index: 100;
         }
+
+        .brand-box { display: flex; align-items: center; gap: 10px; }
+        .logo-img { width: 30px; height: 30px; object-fit: contain; }
         .brand { font-size: 1.5rem; font-weight: 900; letter-spacing: 0px; color: var(--text); }
         
-        .search-container { flex: 1; max-width: 400px; margin: 0 20px; position: relative; }
-        .search-container input { width: 100%; padding: 10px 15px; border-radius: 8px; background: var(--card-bg); border: 1px solid var(--border); color: #fff; margin-bottom: 0; outline: none; }
+        .search-wrapper { position: relative; display: flex; align-items: center; }
+        #searchInput { 
+            width: 0; padding: 0; opacity: 0; border: none; background: var(--card-bg); 
+            color: #fff; transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); border-radius: 8px; margin-right: 10px; outline: none;
+        }
+        #searchInput.active { width: 200px; padding: 8px 15px; opacity: 1; border: 1px solid var(--border); }
 
         .header-right { display: flex; align-items: center; gap: 20px; }
-        .settings-trigger { color: var(--dim); cursor: pointer; font-size: 1.2rem; transition: 0.2s; }
-        .settings-trigger:hover { color: var(--accent); }
+        .settings-trigger { color: var(--dim); cursor: pointer; font-size: 1.2rem; transition: 0.3s; }
+        .settings-trigger:hover { color: var(--accent); transform: rotate(45deg); }
 
-        #boot-screen { position: fixed; inset: 0; background: #000; z-index: 9999; display: flex; flex-direction: column; align-items: center; justify-content: center; transition: opacity 0.5s ease; }
-        .boot-logo { font-size: 2.5rem; font-weight: 900; letter-spacing: 0px; color: #fff; }
+        #boot-screen { position: fixed; inset: 0; background: #000; z-index: 9999; display: flex; flex-direction: column; align-items: center; justify-content: center; transition: opacity 0.8s ease; }
+        .boot-logo { font-size: 2.5rem; font-weight: 900; letter-spacing: 0px; color: #fff; animation: pulse 2s infinite; }
+        @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.5; } 100% { opacity: 1; } }
 
-        main { padding: 40px; max-width: 1400px; margin: 0 auto; height: calc(100vh - 80px); overflow-y: auto; }
-        .hero { background: var(--hero-grad); border: 1px solid var(--border); border-radius: 20px; padding: 40px; margin-bottom: 40px; }
+        main { padding: 40px; max-width: 1400px; margin: 0 auto; height: calc(100vh - 80px); overflow-y: auto; scroll-behavior: smooth; }
+        
+        /* HEAVY HERO ANIMATION */
+        .hero { 
+            background: var(--hero-grad); 
+            border: 1px solid var(--border); 
+            border-radius: 20px; 
+            padding: 40px; 
+            margin-bottom: 40px; 
+            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 0 0 rgba(0,0,0,0);
+        }
+        .hero:hover {
+            transform: translateY(-4px) scale(1.01);
+            border-color: var(--accent);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4), 0 0 20px rgba(255,255,255,0.05);
+        }
         
         .game-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 25px; }
         .game-card { 
             background: var(--card-bg); border: 1px solid var(--border); border-radius: 18px; 
             padding: 20px 10px; display: flex; flex-direction: column; align-items: center; 
-            transition: 0.2s; cursor: pointer; text-align: center; position: relative;
+            transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1); cursor: pointer; text-align: center; position: relative;
         }
-        .game-card:hover { border-color: var(--accent); transform: translateY(-5px); }
+        .game-card:hover { border-color: var(--accent); transform: translateY(-8px); z-index: 2; }
         
-        .icon-wrapper { width: 74px; height: 74px; border-radius: 18px; margin-bottom: 12px; overflow: hidden; pointer-events: none; }
+        .icon-wrapper { width: 74px; height: 74px; border-radius: 18px; margin-bottom: 12px; overflow: hidden; pointer-events: none; transition: 0.3s; }
+        .game-card:hover .icon-wrapper { transform: scale(1.1); }
         .game-icon-sq { width: 100%; height: 100%; object-fit: cover; }
         .game-card strong { font-size: 0.85rem; pointer-events: none; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; width: 90%; }
         
         .card-actions { margin-top: 10px; display: flex; gap: 15px; font-size: 0.85rem; color: var(--dim); opacity: 0; transition: 0.2s; }
         .game-card:hover .card-actions { opacity: 1; }
-        .card-actions i:hover { color: var(--accent); }
 
-        #settings-overlay, #modal-overlay, #confirm-overlay, #split-select-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.85); display: none; align-items: center; justify-content: center; z-index: 5000; backdrop-filter: blur(10px); }
-        .modal-card { background: var(--bg); border: 1px solid var(--border); width: 450px; padding: 30px; border-radius: 24px; max-height: 80vh; overflow-y: auto; }
-        input { width: 100%; margin-bottom: 12px; padding: 14px; background: var(--sidebar); border: 1px solid var(--border); color: var(--text); border-radius: 10px; box-sizing: border-box; outline: none; }
+        /* SMOOTH OVERLAYS */
+        #settings-overlay, #modal-overlay, #confirm-overlay { 
+            position: fixed; inset: 0; background: rgba(0,0,0,0.85); 
+            display: none; align-items: center; justify-content: center; z-index: 5000; 
+            backdrop-filter: blur(15px);
+            opacity: 0; transition: opacity 0.3s ease;
+        }
+        .modal-card { 
+            background: var(--bg); border: 1px solid var(--border); width: 450px; 
+            padding: 30px; border-radius: 24px; max-height: 80vh; overflow-y: auto;
+            transform: scale(0.9) translateY(20px); transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .show-modal { opacity: 1 !important; }
+        .show-modal .modal-card { transform: scale(1) translateY(0); }
+
+        input { width: 100%; margin-bottom: 12px; padding: 14px; background: var(--sidebar); border: 1px solid var(--border); color: var(--text); border-radius: 10px; box-sizing: border-box; outline: none; transition: 0.2s; }
+        input:focus { border-color: var(--accent); background: var(--card-bg); }
         
         .theme-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin: 20px 0; }
-        .theme-btn { border: 1px solid var(--border); padding: 15px 5px; border-radius: 10px; cursor: pointer; font-size: 0.7rem; text-align: center; font-weight: bold; color: #fff; }
+        .theme-btn { border: 1px solid var(--border); padding: 15px 5px; border-radius: 10px; cursor: pointer; font-size: 0.7rem; text-align: center; font-weight: bold; color: #fff; transition: 0.2s; }
+        .theme-btn:hover { transform: scale(1.05); filter: brightness(1.2); }
 
-        #player-view { position: fixed; inset: 0; background: #000; display: none; z-index: 4000; flex-direction: column; }
+        #player-view { position: fixed; inset: 0; background: #000; display: none; z-index: 4000; flex-direction: column; animation: slideIn 0.5s ease; }
+        @keyframes slideIn { from { transform: translateY(100%); } to { transform: translateY(0); } }
+
         .player-controls { display: flex; justify-content: space-between; align-items: center; padding: 10px 25px; background: #000; border-bottom: 1px solid #111; }
         .p-btns { display: flex; gap: 10px; }
-        .p-btn { background: #222; color: #fff; border: none; padding: 8px 15px; border-radius: 6px; cursor: pointer; font-weight: bold; font-size: 0.8rem; }
+        .p-btn { background: #222; color: #fff; border: none; padding: 8px 15px; border-radius: 6px; cursor: pointer; font-weight: bold; font-size: 0.8rem; transition: 0.2s; }
+        .p-btn:hover { background: #333; }
         .p-btn.exit { background: #fff; color: #000; }
         
-        .frame-container { display: flex; flex-grow: 1; background: #000; }
-        /* UPGRADED IFRAMES FOR SAFETY */
+        .frame-container { display: flex; flex-grow: 1; background: #000; position: relative; }
         iframe { flex: 1; border: none; width: 100%; height: 100%; }
-        #split-frame { display: none; border-left: 1px solid var(--border); }
-
-        .confirm-btns { display: flex; gap: 10px; margin-top: 20px; }
-        .btn-action { flex: 1; padding: 12px; border-radius: 10px; border: none; font-weight: bold; cursor: pointer; }
-
-        .split-item { padding: 10px; border-bottom: 1px solid var(--border); cursor: pointer; display: flex; align-items: center; gap: 10px; }
-        .split-item:hover { background: var(--card-bg); }
     </style>
 </head>
 <body class="theme-oled">
 
     <div id="boot-screen">
-        <div class="boot-logo">GameCloud.</div>
+        <div class="boot-logo">Welcome Back!</div>
     </div>
 
     <header>
-        <div class="brand">GameCloud.</div>
-        <div class="search-container">
-            <input type="text" id="searchInput" placeholder="Search.." oninput="render()">
+        <div class="brand-box">
+            <img src="https://media.discordapp.net/attachments/1324691487950241804/1459654049916784812/Picsart_26-01-11_00-03-40-040.png?ex=69641044&is=6962bec4&hm=da69efbb8081f5a870f584cddcd91cd1ac281167e0f4d096306a0ae7572bed36&=&format=webp&quality=lossless&width=1178&height=1178" class="logo-img">
+            <div class="brand">Null Launcher</div>
         </div>
+        
         <div class="header-right">
+            <div class="search-wrapper">
+                <input type="text" id="searchInput" placeholder="Search.." oninput="render()">
+                <i class="fa-solid fa-magnifying-glass settings-trigger" onclick="toggleSearch()"></i>
+            </div>
             <i class="fa-solid fa-gear settings-trigger" onclick="toggleSettings()"></i>
             <div style="text-align: right">
                 <div id="clock" style="font-weight: 800; font-size: 1rem;">00:00</div>
@@ -109,11 +147,23 @@
     <main>
         <div class="hero">
             <h1>Ready to Play?</h1>
-            <p>Everything's right where you left it. Ready when you are!</p>
-            <button style="background:#fff; border:none; padding:10px 20px; border-radius:8px; cursor:pointer; font-weight:bold" onclick="openModal()">+ Add New</button>
+            <p>You own this space, so do whatever.</p>
+            <button style="background:#fff; border:none; padding:10px 20px; border-radius:8px; cursor:pointer; font-weight:bold; transition: 0.3s;" onclick="openModal()">+ New</button>
         </div>
-        <div id="game-grid" class="game-grid" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+        <div id="game-grid" class="game-grid"></div>
     </main>
+
+    <div id="player-view">
+        <div class="player-controls">
+            <div class="p-btns">
+                <button class="p-btn exit" onclick="closePlayer()">← Exit</button>
+            </div>
+            <div id="playing-now" style="font-weight: bold; color: #555;">SESSION ACTIVE</div>
+        </div>
+        <div class="frame-container">
+            <iframe id="game-frame" sandbox="allow-scripts allow-forms allow-same-origin allow-popups" credentialless allow="autoplay; gamepad; fullscreen"></iframe>
+        </div>
+    </div>
 
     <div id="modal-overlay">
         <div class="modal-card">
@@ -127,21 +177,12 @@
         </div>
     </div>
 
-    <div id="split-select-overlay">
-        <div class="modal-card">
-            <h3>Choose Side App</h3>
-            <div id="split-list" style="margin-top:15px"></div>
-            <button onclick="closeSplitSelect()" style="width:100%; background:none; border:none; color:var(--dim); margin-top:10px; cursor:pointer">Cancel</button>
-        </div>
-    </div>
-
     <div id="confirm-overlay">
-        <div class="modal-card">
-            <h3>Delete this item?</h3>
-            <div class="confirm-btns">
-                <button class="btn-action" id="confirm-yes" style="background: #ff4757; color: white;">Confirm Delete</button>
-                <button class="btn-action" onclick="closeConfirm()" style="background: var(--sidebar); color: var(--text);">Cancel</button>
-            </div>
+        <div class="modal-card" style="text-align:center">
+            <h3 id="confirm-text">Are you sure?</h3>
+            <p style="color:var(--dim); font-size:0.9rem; margin-bottom:20px;">This action cannot be undone.</p>
+            <button id="confirm-yes" style="width:100%; padding:14px; background:#ff4757; color:white; border:none; border-radius:10px; font-weight:bold; cursor:pointer; margin-bottom:10px;">Confirm</button>
+            <button onclick="closeConfirm()" style="width:100%; background:none; border:none; color:var(--dim); cursor:pointer">Cancel</button>
         </div>
     </div>
 
@@ -165,45 +206,23 @@
         </div>
     </div>
 
-    <div id="player-view">
-        <div class="player-controls">
-            <div class="p-btns">
-                <button class="p-btn exit" onclick="closePlayer()">← Exit</button>
-                <button class="p-btn" onclick="openSplitSelect()">Split View</button>
-            </div>
-            <div id="playing-now" style="font-weight: bold; color: #555;">SESSION ACTIVE</div>
-        </div>
-        <div class="frame-container">
-            <iframe id="game-frame" sandbox="allow-scripts allow-forms allow-same-origin allow-popups" credentialless allow="autoplay; gamepad; fullscreen"></iframe>
-            <iframe id="split-frame" sandbox="allow-scripts allow-forms allow-same-origin allow-popups" credentialless allow="autoplay; gamepad; fullscreen"></iframe>
-        </div>
-    </div>
-
     <script>
         const KEY = 'gc_final_v13';
         let games = JSON.parse(localStorage.getItem(KEY)) || [];
-        let deleteIdx = null;
+
+        function toggleSearch() {
+            const input = document.getElementById('searchInput');
+            input.classList.toggle('active');
+            if(input.classList.contains('active')) input.focus();
+        }
 
         window.addEventListener('load', () => {
             setTimeout(() => {
                 const boot = document.getElementById('boot-screen');
                 boot.style.opacity = '0';
-                setTimeout(() => boot.style.display = 'none', 500);
+                setTimeout(() => boot.style.display = 'none', 800);
             }, 1200);
         });
-
-        function allowDrop(ev) { ev.preventDefault(); }
-        function drag(ev, index) { ev.dataTransfer.setData("text", index); }
-        function drop(ev) {
-            ev.preventDefault();
-            const fromIndex = ev.dataTransfer.getData("text");
-            const toIndex = ev.target.closest('.game-card')?.getAttribute('data-index');
-            if (toIndex !== undefined && fromIndex !== toIndex) {
-                const moved = games.splice(fromIndex, 1)[0];
-                games.splice(toIndex, 0, moved);
-                save();
-            }
-        }
 
         function updateClock() {
             const now = new Date();
@@ -221,104 +240,110 @@
                     let dUrl = game.url.startsWith('http') ? game.url : 'https://' + game.url;
                     const icon = game.icon || `https://www.google.com/s2/favicons?sz=128&domain=${new URL(dUrl).hostname}`;
                     grid.innerHTML += `
-                        <div class="game-card" draggable="true" ondragstart="drag(event, ${idx})" data-index="${idx}" onclick="play('${dUrl}', '${game.name}')">
+                        <div class="game-card" onclick="play('${dUrl}', '${game.name}')">
                             <div class="icon-wrapper"><img src="${icon}" class="game-icon-sq" onerror="this.src='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/svgs/solid/gamepad.svg'"></div>
                             <strong>${game.name}</strong>
                             <div class="card-actions">
                                 <i class="fa-solid fa-pen" onclick="editGame(${idx}); event.stopPropagation();"></i>
-                                <i class="fa-solid fa-trash" onclick="askDelete(${idx}); event.stopPropagation();"></i>
+                                <i class="fa-solid fa-trash" onclick="deleteGame(${idx}); event.stopPropagation();"></i>
                             </div>
                         </div>`;
                 }
             });
         }
 
-        function editGame(idx) {
-            const game = games[idx];
-            document.getElementById('modal-title').innerText = "Edit Game";
-            document.getElementById('editIdx').value = idx;
-            document.getElementById('mName').value = game.name;
-            document.getElementById('mUrl').value = game.url;
-            document.getElementById('mIcon').value = game.icon || "";
-            openModal();
-        }
-
-        function askDelete(idx) {
-            deleteIdx = idx;
-            document.getElementById('confirm-overlay').style.display = 'flex';
-        }
-        function closeConfirm() { document.getElementById('confirm-overlay').style.display = 'none'; }
-        document.getElementById('confirm-yes').onclick = () => {
-            games.splice(deleteIdx, 1);
-            save();
-            closeConfirm();
-        };
-
-        // NEW BYPASS FUNCTION TO SHOW BLOCKED SITES
         function bypassRefused(url) {
             const blockedSites = ['youtube.com', 'itch.io', 'google.com', 'discord.com', 'github.io'];
             const needsBypass = blockedSites.some(site => url.includes(site));
-            if (needsBypass) {
-                return `https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`;
-            }
+            if (needsBypass) return `https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`;
             return url;
         }
 
         function play(url, name) { 
             document.getElementById('playing-now').innerText = name.toUpperCase();
-            // USE BYPASS FOR THE MAIN FRAME
             document.getElementById('game-frame').src = bypassRefused(url); 
             document.getElementById('player-view').style.display = 'flex'; 
         }
 
-        function openSplitSelect() {
-            const list = document.getElementById('split-list');
-            list.innerHTML = '';
-            games.forEach(g => {
-                list.innerHTML += `<div class="split-item" onclick="startSplit('${g.url}')">${g.name}</div>`;
-            });
-            document.getElementById('split-select-overlay').style.display = 'flex';
-        }
-        function closeSplitSelect() { document.getElementById('split-select-overlay').style.display = 'none'; }
-        
-        function startSplit(url) {
-            const sf = document.getElementById('split-frame');
-            const dUrl = url.startsWith('http') ? url : 'https://' + url;
-            // USE BYPASS FOR THE SPLIT FRAME
-            sf.src = bypassRefused(dUrl);
-            sf.style.display = 'block';
-            closeSplitSelect();
-        }
-
         function closePlayer() { 
             document.getElementById('game-frame').src = ''; 
-            document.getElementById('split-frame').src = ''; 
-            document.getElementById('split-frame').style.display = 'none';
             document.getElementById('player-view').style.display = 'none'; 
         }
 
-        function save() { localStorage.setItem(KEY, JSON.stringify(games)); render(); }
-        
         function saveGame() {
             const n = document.getElementById('mName').value, u = document.getElementById('mUrl').value, i = document.getElementById('mIcon').value;
             const idx = document.getElementById('editIdx').value;
             if (n && u) {
                 if (idx !== "") games[idx] = { name: n, url: u, icon: i };
                 else games.push({ name: n, url: u, icon: i });
-                save(); closeModal();
+                localStorage.setItem(KEY, JSON.stringify(games)); render(); closeModal();
             }
         }
 
-        function toggleSettings() { const s = document.getElementById('settings-overlay'); s.style.display = (s.style.display === 'flex' ? 'none' : 'flex'); }
-        function openModal() { document.getElementById('modal-overlay').style.display='flex'; }
-        function closeModal() { 
-            document.getElementById('modal-overlay').style.display='none'; 
-            document.getElementById('editIdx').value = "";
-            document.getElementById('mName').value = ""; document.getElementById('mUrl').value = ""; document.getElementById('mIcon').value = "";
-            document.getElementById('modal-title').innerText = "Add New Game";
+        function openConfirm(msg, callback) {
+            const overlay = document.getElementById('confirm-overlay');
+            document.getElementById('confirm-text').innerText = msg;
+            overlay.style.display = 'flex';
+            setTimeout(() => overlay.classList.add('show-modal'), 10);
+            document.getElementById('confirm-yes').onclick = () => {
+                callback();
+                closeConfirm();
+            };
         }
+
+        function closeConfirm() {
+            const overlay = document.getElementById('confirm-overlay');
+            overlay.classList.remove('show-modal');
+            setTimeout(() => overlay.style.display = 'none', 300);
+        }
+
+        function deleteGame(idx) {
+            openConfirm('Delete this game?', () => {
+                games.splice(idx, 1);
+                localStorage.setItem(KEY, JSON.stringify(games));
+                render();
+            });
+        }
+
+        function editGame(idx) {
+            const game = games[idx];
+            document.getElementById('editIdx').value = idx;
+            document.getElementById('mName').value = game.name; document.getElementById('mUrl').value = game.url; document.getElementById('mIcon').value = game.icon || "";
+            openModal();
+        }
+
+        function toggleSettings() { 
+            const s = document.getElementById('settings-overlay'); 
+            if (s.style.display === 'flex') {
+                s.classList.remove('show-modal');
+                setTimeout(() => s.style.display = 'none', 300);
+            } else {
+                s.style.display = 'flex';
+                setTimeout(() => s.classList.add('show-modal'), 10);
+            }
+        }
+        
+        function openModal() { 
+            const m = document.getElementById('modal-overlay');
+            m.style.display='flex'; 
+            setTimeout(() => m.classList.add('show-modal'), 10);
+        }
+        
+        function closeModal() { 
+            const m = document.getElementById('modal-overlay');
+            m.classList.remove('show-modal');
+            setTimeout(() => { m.style.display='none'; document.getElementById('editIdx').value = ""; }, 300);
+        }
+        
         function setTheme(t) { document.body.className = 'theme-' + t; localStorage.setItem('gc_theme', t); }
-        function wipeData() { if(confirm('Wipe all library data?')) { localStorage.removeItem(KEY); games = []; render(); } }
+        
+        function wipeData() {
+            openConfirm('Wipe all data?', () => {
+                localStorage.removeItem(KEY);
+                games = [];
+                render();
+            });
+        }
 
         setTheme(localStorage.getItem('gc_theme') || 'oled');
         render();
